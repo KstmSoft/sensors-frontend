@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-12">
+      <div class="col-12" v-if="sensor">
         <card type="chart">
           <template slot="header">
             <div class="row">
               <div class="col-sm-10">
-                <h5 class="card-category">Analog Read of {{ sensor.address }}</h5>
+                <h5 class="card-category">{{$t('details.analogRead')}} {{ sensor.address }}</h5>
                 <h2 class="card-title">{{ sensor.tag }}</h2>
                 <span class="card-title"><code>vout = {{ voltage }}, y = {{ sensor.formula }}, y = {{ computed }}</code></span>
               </div>
@@ -39,7 +39,7 @@ export default {
   data() {
     return {
       id: -1,
-      sensor: {},
+      sensor: null,
       voltage: 0,
       computed: 0,
       chartData: {
@@ -48,7 +48,22 @@ export default {
         }],
         labels: [],
       },
-      extraOptions: {
+      extraOptions: {},
+    }
+  },
+  beforeRouteEnter(to, from, next) {
+    fetch([process.env.VUE_APP_API, "sensor", to.query.id].join("/")).then(response => {
+      response.json().then(data => {
+        next(vm => vm.setData(data));
+      });
+    }).catch(error => {
+      console.error('Cannot load sensor: ', error);
+    })
+  },
+  methods: {
+    setData(sensor){
+      this.sensor = sensor;
+      this.extraOptions = {
         ...chartConfigs.defaultChartOptions,
         scales: {
           yAxes: [{
@@ -61,8 +76,11 @@ export default {
             ticks: {
               suggestedMin: 0,
               suggestedMax: 5,
-              padding: 20,
-              fontColor: "#9a9a9a"
+              padding: 10,
+              fontColor: "#9a9a9a",
+              callback: function(value, index, ticks) {
+                return value + ` ${sensor.symbol}`;
+              }
             }
           }],
           xAxes: [{
@@ -78,18 +96,8 @@ export default {
             }
           }]
         }
-      },
-    }
-  },
-  async created() {
-    this.id = this.$route.query.id;
-    this.sensor = await this.getSensor();
-    this.fetchData();
-  },
-  methods: {
-    async getSensor() {
-      const response = await fetch([process.env.VUE_APP_API, "sensor", this.id].join("/"));
-      return await response.json();
+      };
+      this.fetchData();
     },
     fetchData() {
       let series = [];

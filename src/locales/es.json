@@ -1,0 +1,30 @@
+{
+  "layout": {
+    "back": "atrás",
+    "restart": "Reiniciar",
+    "powerOff": "Apagar",
+    "powerOptions": "Opciones de apagado"
+  },
+  "pages": {
+    "dashboard": "dashboard"
+  },
+  "form": {
+    "editSensor": "Editar sensor",
+    "addSensor": "Añadir sensor",
+    "address": "Dirección del Análogo",
+    "tag": "Tag (Descripción)",
+    "tagPlaceholder": "Nombre descriptivo del sensor",
+    "refreshRate": "Tasa de refresco (Segundos)",
+    "maxValue": "Valor máximo",
+    "calibrationFormula": "Formula de calibración",
+    "outputVoltage": "variable de voltaje",
+    "symbol": "Acotación",
+    "color": "Color (Hexadecimal)",
+    "add": "Añadir",
+    "edit": "Editar",
+    "cancel": "Cerrar"
+  },
+  "details": {
+    "analogRead": "Lectura del Análogo"
+  }
+}

@@ -11,8 +11,13 @@ const routes = [
   {
     path: "/",
     component: DashboardLayout,
-    redirect: "/sensors",
+    redirect: "/dashboard",
     children: [
+      {
+        path: "dashboard",
+        name: "dashboard",
+        component: Dashboard
+      },
       {
         path: "sensors",
         name: "sensors",
@@ -22,11 +27,6 @@ const routes = [
         path: "details",
         name: "details",
         component: Details
-      },
-      {
-        path: "dashboard",
-        name: "dashboard",
-        component: Dashboard
       }
     ]
   },

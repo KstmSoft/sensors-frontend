@@ -46,43 +46,43 @@
             body-classes="px-lg-5 py-lg-5"
             class="border-0 mb-0">
         <template>
-          <h4 class="card-title">{{ editing ? "Edit Sensor" : "Add Sensor" }}</h4>
+          <h4 class="card-title">{{ editing ? $t('form.editSensor') : $t('form.addSensor') }}</h4>
           <form role="form" ref="sensorForm">
             <div class="form-group">
-              <label>Address</label>
+              <label>{{$t('form.address')}}</label>
               <input type="text" class="form-control" name="address" v-model="sensor.address" placeholder="A0"
                      autofocus>
             </div>
             <div class="form-group">
-              <label>Tag (Description)</label>
+              <label>{{$t('form.tag')}}</label>
               <input type="text" class="form-control" name="tag" v-model="sensor.tag" aria-describedby="tag"
-                     placeholder="Enter something readable">
+                     :placeholder="$t('form.tagPlaceholder')">
             </div>
             <div class="form-group row">
               <div class="col-sm-6">
-                <label>Refresh Rate (Seconds)</label>
+                <label>{{$t('form.refreshRate')}}</label>
                 <input type="number" class="form-control" name="refresh-rate" v-model="sensor.refreshrate"
                        aria-describedby="refresh rate">
               </div>
               <div class="col-sm-6">
-                <label>Max Value</label>
+                <label>{{$t('form.maxValue')}}</label>
                 <input type="number" class="form-control" name="max-value" v-model="sensor.max_value"
                        aria-describedby="maximum value">
               </div>
             </div>
             <div class="form-group">
-              <label>Calibration Formula (<b>vout</b> = output voltage)</label>
+              <label>{{$t('form.calibrationFormula')}} (<b>vout</b> = {{$t('form.outputVoltage')}})</label>
               <input type="text" class="form-control" name="formula" v-model="sensor.formula"
-                     aria-describedby="calibration formula">
+              aria-describedby="calibration formula">
             </div>
             <div class="form-group row">
               <div class="col-sm-6">
-                <label>Symbol</label>
+                <label>{{$t('form.symbol')}}</label>
                 <input type="text" class="form-control" name="symbol" v-model="sensor.symbol" aria-describedby="symbol"
                        placeholder="VOLT">
               </div>
               <div class="col-sm-6">
-                <label>Color (HEX)</label>
+                <label>{{$t('form.color')}}</label>
                 <input type="text" class="form-control" name="color" v-model="sensor.color" aria-describedby="color"
                        placeholder="#FFFFFF">
               </div>
@@ -98,8 +98,8 @@
             </div>
             <div>
               <div class="btn-wrapper">
-                <button class="btn btn-secondary" v-on:click="showSensorModal=false">Cancel</button>
-                <button class="btn btn-primary" v-on:click="submit()">{{ editing ? "Edit" : "Add" }}</button>
+                <button class="btn btn-secondary" v-on:click="showSensorModal=false">{{$t('form.cancel')}}</button>
+                <button class="btn btn-primary" v-on:click="submit()">{{ editing ? $t('form.edit') : $t('form.add') }}</button>
               </div>
             </div>
           </div>

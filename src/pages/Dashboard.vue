@@ -77,7 +77,6 @@ export default {
   },
   async created() {
     this.sensors = await this.getAllSensors();
-    console.log(this.sensors);
   },
   methods: {
     async getAllSensors(){
