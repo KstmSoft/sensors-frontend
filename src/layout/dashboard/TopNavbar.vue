@@ -3,13 +3,15 @@
     <div class="container-fluid">
 
       <div v-if="routeName === 'dashboard'" class="navbar-wrapper">
-        <i class="tim-icons icon-chart-bar-32"></i>
-        <p class="navbar-brand pl-2">{{ $t('pages.' + routeName) }}</p>
+        <p class="navbar-brand pl-2">
+          <span class="tim-icons icon-chart-bar-32 mb-1"></span> {{ $t('pages.' + routeName) }}
+        </p>
       </div>
 
       <div v-if="routeName !== 'dashboard'" class="navbar-wrapper" @click="$router.go(-1)" role="link" style="cursor: pointer">
-        <i class="tim-icons icon-minimal-left"></i>
-        <p class="navbar-brand pl-2">{{$t('layout.back')}}</p>
+        <p class="navbar-brand pl-2">
+          <span class="tim-icons icon-minimal-left mb-1"></span> {{$t('layout.back')}}
+        </p>
       </div>
 
       <button class="navbar-toggler" type="button"
@@ -27,6 +29,11 @@
         <div class="collapse navbar-collapse show" v-show="showMenu">
           <ul class="navbar-nav ml-auto">
             <div class="search-bar input-group">
+              <router-link :to="{ name: 'dashboard'}" custom v-slot="{ navigate }">
+                <button class="btn btn-link" @click="navigate" role="link">
+                  <i class="tim-icons icon-chart-bar-32"></i>
+                </button>
+              </router-link>
               <router-link :to="{ name: 'sensors'}" custom v-slot="{ navigate }">
                 <button class="btn btn-link" @click="navigate" role="link">
                   <i class="tim-icons icon-bullet-list-67"></i>

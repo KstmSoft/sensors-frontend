@@ -1,36 +1,37 @@
 <template>
-  <div>
-    <div class="row">
-      <div class="col-12" v-if="sensor">
-        <card type="chart">
-          <template slot="header">
-            <div class="row">
-              <div class="col-sm-10">
-                <h5 class="card-category">{{$t('details.analogRead')}} {{ sensor.address }}</h5>
-                <h2 class="card-title">{{ sensor.tag }}</h2>
-                <span class="card-title"><code>vout = {{ voltage }}, y = {{ sensor.formula }}, y = {{ computed }}</code></span>
-              </div>
+  <div class="row">
+    <div class="col-12">
+      <card v-if="sensor" type="chart">
+        <template slot="header">
+          <div class="row">
+            <div class="col-sm-10">
+              <h5 class="card-category">{{$t('details.analogRead')}} {{ sensor.address }}</h5>
+              <h2 class="card-title">{{ sensor.tag }}</h2>
+              <span class="card-title"><code>vout = {{ voltage }}, y = {{ sensor.formula }}, y = {{ computed }}</code></span>
             </div>
-          </template>
-          <div class="chart-area">
-            <line-chart style="height: 100%"
-                        ref="sensorChart"
-                        chart-id="sensor-chart"
-                        :chart-data="chartData"
-                        :extra-options="extraOptions">
-            </line-chart>
           </div>
-        </card>
-      </div>
+        </template>
+        <div class="chart-area">
+          <line-chart style="height: 100%"
+                      ref="sensorChart"
+                      chart-id="sensor-chart"
+                      :chart-data="chartData"
+                      :extra-options="extraOptions">
+          </line-chart>
+        </div>
+      </card>
+    </div>
+    <div class="col-12">
+      <card>
+        <button class="btn btn-block btn-success" @click="downloadLogs()">{{ $t('details.download') }}</button>
+      </card>
     </div>
   </div>
 </template>
 <script>
 import LineChart from '@/components/Charts/LineChart';
 import * as chartConfigs from '@/components/Charts/config';
-import {all, create} from "mathjs";
-
-const math = create(all);
+import axios from "axios";
 
 export default {
   components: {
@@ -42,6 +43,7 @@ export default {
       sensor: null,
       voltage: 0,
       computed: 0,
+      chartRange: 20,
       chartData: {
         datasets: [{
           data: []
@@ -57,7 +59,7 @@ export default {
         next(vm => vm.setData(data));
       });
     }).catch(error => {
-      console.error('Cannot load sensor: ', error);
+      console.error('Cannot load initial data: ', error);
     })
   },
   methods: {
@@ -115,12 +117,23 @@ export default {
           }],
           labels: labels,
         }
-        if(xAxis > 20){
+        if(xAxis > this.chartRange){
           series.splice(0, 1);
           labels.splice(0, 1);
         }
         xAxis++;
       });
+    },
+    downloadLogs(){
+      axios.get([process.env.VUE_APP_API, "logs", this.sensor.address].join("/"), {responseType: 'blob'})
+        .then(response => {
+          const blob = new Blob([response.data], {type: 'text/csv'})
+          const link = document.createElement('a')
+          link.href = URL.createObjectURL(blob)
+          link.download = this.sensor.address
+          link.click()
+          URL.revokeObjectURL(link.href)
+        }).catch(console.error)
     }
   }
 };

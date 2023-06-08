@@ -25,6 +25,7 @@
     "cancel": "Cerrar"
   },
   "details": {
-    "analogRead": "Lectura del Análogo"
+    "analogRead": "Lectura del Análogo",
+    "download": "Descargar registros del sensor (CSV)"
   }
 }

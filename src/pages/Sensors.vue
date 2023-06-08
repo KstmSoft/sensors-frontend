@@ -1,6 +1,5 @@
 <template>
   <div class="row">
-
     <div v-for="sensor in sensorList" class="col-md-12">
       <div class="card sensor-card">
         <div class="d-flex">
